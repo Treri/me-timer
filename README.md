@@ -20,9 +20,9 @@ timer and countdown directive for angular
       [end-callback="endCallback"]
     >
       {{days}} {{hours}}:{{minutes}}:{{seconds}}
-
+      <br />
       {{dHours}}{{uHours}}:{{dMinutes}}{{uMinutes}}:{{dSeconds}}{{uSeconds}}
-
+      <br />
       {{counter}}
     </div>
     ```
