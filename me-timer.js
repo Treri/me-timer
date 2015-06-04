@@ -3,6 +3,28 @@ angular.module('me-timer', [])
   '$interval',
   function($interval){
 
+    var pad = (function Padder(len, pad) {
+      if (len === undefined) {
+        len = 1;
+      }
+      if (pad === undefined) {
+        pad = '0';
+      }
+
+      var pads = [];
+
+      while (pads.length < len) {
+        pads.push(pad);
+      }
+
+      pads = pads.join('');
+
+      return function (what) {
+        var s = what.toString();
+        return pads.substring(0, pads.length - s.length) + s;
+      };
+    })(2, '0');
+
     return {
       restrict: 'AE',
       scope: true,
@@ -110,15 +132,15 @@ angular.module('me-timer', [])
 
             // days获取
             offset = endTime - startTime;
-            offset = offset >= 0 ? offset : 0;
+            offset = Math.max(offset, 0);
             days = offset >= day ? parseInt(offset / day) : 0;
             $scope.days = days;
 
             // hours获取
             offset = offset - day * days;
-            offset = offset >= 0 ? offset : 0;
+            offset = Math.max(offset, 0);
             hours = offset >= hour ? parseInt(offset / hour) : 0;
-            ref = hours > 9 ? (hours + '') : ('0' + hours);
+            ref = pad(hours);
             tmp = ref.split('');
             $scope.hours = hours;
             $scope.uHours = tmp[1];
@@ -126,9 +148,9 @@ angular.module('me-timer', [])
 
             // minutes获取
             offset = offset - hour * hours;
-            offset = offset >= 0 ? offset : 0;
+            offset = Math.max(offset, 0);
             minutes = offset >= minute ? parseInt(offset / minute) : 0;
-            ref = minutes > 9 ? (minutes + '') : ('0' + minutes);
+            ref = pad(minutes);
             tmp = ref.split('');
             $scope.minutes = minutes;
             $scope.uMinutes = tmp[1];
@@ -136,9 +158,9 @@ angular.module('me-timer', [])
 
             // seconds获取
             offset = offset - minute * minutes;
-            offset = offset >= 0 ? offset : 0;
+            offset = Math.max(offset, 0);
             seconds = offset >= second ? parseInt(offset / second) : 0;
-            ref = seconds > 9 ? (seconds + '') : ('0' + seconds);
+            ref = pad(seconds);
             tmp = ref.split('');
             $scope.seconds = seconds;
             $scope.uSeconds = tmp[1];
